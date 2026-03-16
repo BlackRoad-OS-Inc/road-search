@@ -179,17 +179,18 @@ async function initDB(db) {
     try { await db.prepare(sql).run(); } catch (e) { console.log('Schema skip:', e.message); }
   }
 
-  // Seed if empty
-  const count = await db.prepare('SELECT COUNT(*) as c FROM pages').first();
-  if (count.c === 0) {
-    for (const page of SEED_PAGES) {
-      await db.prepare(
-        'INSERT OR IGNORE INTO pages (url, title, description, content, domain, category, tags) VALUES (?, ?, ?, ?, ?, ?, ?)'
-      ).bind(page.url, page.title, page.description, page.content, page.domain, page.category, page.tags).run();
-    }
-    return SEED_PAGES.length;
+  // Upsert ALL seed pages every time (not just when empty)
+  let upserted = 0;
+  for (const page of SEED_PAGES) {
+    await db.prepare(
+      `INSERT INTO pages (url, title, description, content, domain, category, tags)
+       VALUES (?, ?, ?, ?, ?, ?, ?)
+       ON CONFLICT(url) DO UPDATE SET title=excluded.title, description=excluded.description,
+       content=excluded.content, domain=excluded.domain, category=excluded.category, tags=excluded.tags`
+    ).bind(page.url, page.title, page.description, page.content, page.domain, page.category, page.tags).run();
+    upserted++;
   }
-  return 0;
+  return upserted;
 }
 
 // ─── Search ───────────────────────────────────────────────────────────
@@ -394,11 +395,25 @@ async function handleStats(env) {
 // ─── Index page (add to search index) ─────────────────────────────────
 async function handleIndex(request, env) {
   const auth = request.headers.get('Authorization');
-  if (!auth || auth !== `Bearer ${env.INDEX_KEY}`) {
+  if (!auth || !env.INDEX_KEY) {
+    return Response.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+  // Constant-time comparison via HMAC to prevent timing attacks
+  const enc = new TextEncoder();
+  const key = await crypto.subtle.importKey('raw', enc.encode('auth-check'), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  const expectedMac = await crypto.subtle.sign('HMAC', key, enc.encode(`Bearer ${env.INDEX_KEY}`));
+  const actualMac = await crypto.subtle.sign('HMAC', key, enc.encode(auth));
+  const expectedArr = new Uint8Array(expectedMac);
+  const actualArr = new Uint8Array(actualMac);
+  let match = expectedArr.length === actualArr.length;
+  for (let i = 0; i < expectedArr.length; i++) match &= expectedArr[i] === actualArr[i];
+  if (!match) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const pages = await request.json();
+  let pages;
+  try { pages = await request.json(); }
+  catch { return Response.json({ error: 'Invalid JSON' }, { status: 400 }); }
   const toIndex = Array.isArray(pages) ? pages : [pages];
   let indexed = 0;
 
@@ -430,6 +445,14 @@ async function handleIndex(request, env) {
   return Response.json({ ok: true, indexed });
 }
 
+// ─── Rebuild FTS Index ───────────────────────────────────────────────
+async function handleRebuild(env) {
+  // Drop and recreate FTS table
+  try { await env.DB.prepare("INSERT INTO pages_fts(pages_fts) VALUES('rebuild')").run(); } catch {}
+  const count = await env.DB.prepare('SELECT COUNT(*) as c FROM pages').first();
+  return Response.json({ ok: true, rebuilt: count?.c || 0, note: 'FTS rebuild triggered' });
+}
+
 // ─── Lucky (I'm Feeling Lucky — redirect to top result) ──────────────
 async function handleLucky(request, env) {
   const q = new URL(request.url).searchParams.get('q')?.trim();
@@ -448,6 +471,15 @@ async function handleLucky(request, env) {
   }
 
   if (result?.url) {
+    // Validate redirect URL — only allow blackroad.io domains to prevent open redirect
+    try {
+      const target = new URL(result.url);
+      if (!target.hostname.endsWith('blackroad.io') && !target.hostname.endsWith('blackroad.company') && !target.hostname.endsWith('lucidia.earth')) {
+        return Response.json({ error: 'External redirect blocked', url: result.url }, { status: 403 });
+      }
+    } catch {
+      return Response.json({ error: 'Invalid URL in index' }, { status: 500 });
+    }
     return Response.redirect(result.url, 302);
   }
   return Response.json({ error: 'No results found' }, { status: 404 });
@@ -943,6 +975,10 @@ export default {
         case url.pathname === '/init':
           const seeded = await initDB(env.DB);
           response = Response.json({ ok: true, seeded });
+          break;
+
+        case url.pathname === '/rebuild':
+          response = await handleRebuild(env);
           break;
 
         case url.pathname === '/search' || url.pathname === '/api/search':
