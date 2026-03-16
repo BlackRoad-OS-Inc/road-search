@@ -1,41 +1,64 @@
 <div align="center">
-
 <img src="https://images.blackroad.io/pixel-art/road-logo.png" alt="BlackRoad OS" width="80" />
 
-# road-search
+# RoadSearch
 
-**RoadSearch — FTS5 search engine with AI answers across the BlackRoad ecosystem.**
+**FTS5 search engine with AI answers across the BlackRoad ecosystem.**
 
 [![BlackRoad OS](https://img.shields.io/badge/BlackRoad_OS-Pave_Tomorrow-FF2255?style=for-the-badge&labelColor=000000)](https://blackroad.io)
-[![License](https://img.shields.io/badge/License-Proprietary-FF6B2B?style=for-the-badge&labelColor=000000)](./LICENSE)
-[![Edge AI](https://img.shields.io/badge/Edge_AI-52_TOPS-00D4FF?style=for-the-badge&labelColor=000000)](https://github.com/BlackRoad-OS-Inc)
-
-</div>
-
-<div align="center">
-<sub>Part of the <a href="https://blackroad.io">BlackRoad OS</a> ecosystem — sovereign edge AI infrastructure</sub>
 </div>
 
 ---
 
-## Overview
+## Live
 
-RoadSearch — FTS5 search engine with AI answers across the BlackRoad ecosystem.
+**[search.blackroad.io](https://search.blackroad.io)** — 43 pages indexed, AI-powered answers via Ollama.
 
-## License
+## Architecture
 
-**Proprietary** — Copyright © 2024–2026 [BlackRoad OS, Inc.](https://blackroad.io) All rights reserved.
+```
+Browser → Cloudflare Worker → D1 (FTS5) → Results
+                                ↓
+                         Ollama (AI answers)
+```
 
-Founder & CEO: **Alexa Louise Amundson** · Delaware C-Corp
+## API
 
-See [LICENSE](./LICENSE) for full terms.
+```bash
+# Search
+curl "https://search.blackroad.io/api/search?q=agent&limit=10"
+
+# Autocomplete
+curl "https://search.blackroad.io/api/suggest?q=black"
+
+# Stats
+curl "https://search.blackroad.io/api/stats"
+
+# I'm Feeling Lucky
+curl "https://search.blackroad.io/lucky?q=lucidia"
+
+# Index new pages (auth required)
+curl -X POST "https://search.blackroad.io/api/index" \
+  -H "Authorization: Bearer $INDEX_KEY" \
+  -d '[{"url":"https://example.com","title":"Example","description":"..."}]'
+```
+
+## Features
+
+- **FTS5 full-text search** with ranking and snippets
+- **AI answers** via Ollama (Mistral) — summarizes top results
+- **Autocomplete** from titles + recent queries
+- **Trending queries** with 7-day analytics
+- **Category/domain filtering**
+- **I'm Feeling Lucky** redirect
+- **43 seed pages** covering all BlackRoad domains
+
+## Stack
+
+- Cloudflare Workers + D1 (FTS5)
+- Ollama for AI answer generation
+- Vanilla JS frontend with search UI
 
 ---
 
-<div align="center">
-
-**BlackRoad OS — Pave Tomorrow.**
-
-[blackroad.io](https://blackroad.io) · [GitHub](https://github.com/BlackRoad-OS-Inc) · [Brand](https://brand.blackroad.io)
-
-</div>
+*Copyright (c) 2024-2026 BlackRoad OS, Inc. All rights reserved.*
