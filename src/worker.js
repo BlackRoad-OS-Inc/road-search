@@ -22,23 +22,23 @@ function cors(origin) {
 // ─── Seed Data (BlackRoad ecosystem — all 20 root domains + subdomains) ──
 const SEED_PAGES = [
   // ── Core Sites (root domains) ──
-  { url: 'https://blackroad.io', title: 'BlackRoad OS — Sovereign Agent Operating System', description: 'The distributed agent OS. Self-hosted AI infrastructure on Raspberry Pi clusters. 50 AI skills, 5 nodes, 52 TOPS, 275+ repos. Your AI. Your Hardware. Your Rules.', domain: 'blackroad.io', category: 'site', tags: 'os,agents,infrastructure,sovereign,pi,raspberry', content: 'BlackRoad OS is a sovereign agent operating system that runs on Raspberry Pi clusters. It includes AI agents (Alice, Lucidia, Cecilia, Aria, Octavia), a distributed memory system, 50 AI skills across 6 modules, and the Z-framework (Z:=yx-w) for composable infrastructure. Founded by Alexa Louise Amundson. 16 clickable app cards, ecosystem footer across 30 sites.' },
+  { url: 'https://blackroad.io', title: 'BlackRoad OS — Sovereign Agent Operating System', description: 'The distributed agent OS. Self-hosted AI infrastructure on Raspberry Pi clusters. 50 AI skills, 5 nodes, 26 TOPS, 629 repos. Your AI. Your Hardware. Your Rules.', domain: 'blackroad.io', category: 'site', tags: 'os,agents,infrastructure,sovereign,pi,raspberry', content: 'BlackRoad OS is a sovereign agent operating system that runs on Raspberry Pi clusters. It includes AI agents (Alice, Lucidia, Cecilia, Aria, Octavia), a distributed memory system, 50 AI skills across 6 modules, and the Z-framework (Z:=yx-w) for composable infrastructure. Founded by Alexa Louise Amundson. 16 clickable app cards, ecosystem footer across 30 sites.' },
   { url: 'https://blackroad.network', title: 'BlackRoad Network — RoadNet Carrier Infrastructure', description: 'Mesh carrier network spanning 5 Raspberry Pi nodes. WiFi mesh, WireGuard VPN, Pi-hole DNS, and sovereign connectivity.', domain: 'blackroad.network', category: 'site', tags: 'network,mesh,wireguard,vpn,dns,roadnet,carrier', content: 'RoadNet is BlackRoad\'s carrier-grade mesh network. 5 access points (Alice CH1, Cecilia CH6, Octavia CH11, Aria CH1, Lucidia CH11) with dedicated subnets 10.10.x.0/24, NAT routing, Pi-hole DNS filtering, and WireGuard failover. Boot-persistent via systemd.' },
-  { url: 'https://blackroad.systems', title: 'BlackRoad Systems — Distributed Computing Platform', description: 'Distributed systems platform with 52 TOPS of Hailo-8 AI acceleration, Docker Swarm orchestration, and edge computing across 5 nodes.', domain: 'blackroad.systems', category: 'site', tags: 'systems,distributed,hailo,edge,computing,docker,swarm', content: 'BlackRoad Systems is the distributed computing layer. 2x Hailo-8 accelerators (52 TOPS combined) on Cecilia and Octavia, Docker Swarm orchestration, NATS messaging, Portainer management, and sovereign edge computing. 198 listening sockets fleet-wide.' },
+  { url: 'https://blackroad.systems', title: 'BlackRoad Systems — Distributed Computing Platform', description: 'Distributed systems platform with 26 TOPS of Hailo-8 AI acceleration, Docker Swarm orchestration, and edge computing across 5 nodes.', domain: 'blackroad.systems', category: 'site', tags: 'systems,distributed,hailo,edge,computing,docker,swarm', content: 'BlackRoad Systems is the distributed computing layer. 2x Hailo-8 accelerators (26 TOPS combined) on Cecilia and Octavia, Docker Swarm orchestration, NATS messaging, Portainer management, and sovereign edge computing. 198 listening sockets fleet-wide.' },
   { url: 'https://blackroad.me', title: 'BlackRoad Identity — Sovereign Authentication', description: 'Sovereign identity and authentication. RoadID digital identity, self-hosted auth, JWT sessions, and zero third-party dependencies.', domain: 'blackroad.me', category: 'site', tags: 'identity,auth,roadid,jwt,sovereign,login', content: 'BlackRoad Identity provides sovereign authentication with D1-backed user accounts, PBKDF2 password hashing, JWT sessions, and zero third-party auth dependencies. RoadID is your portable digital identity across the BlackRoad ecosystem.' },
-  { url: 'https://blackroad.company', title: 'BlackRoad OS, Inc. — Company', description: 'Delaware C-Corporation. Sovereign AI infrastructure company founded by Alexa Louise Amundson. November 2025 via Stripe Atlas.', domain: 'blackroad.company', category: 'site', tags: 'company,corporate,delaware,about,founder,legal', content: 'BlackRoad OS, Inc. is a Delaware C-Corporation building sovereign AI infrastructure. Founded by Alexa Louise Amundson via Stripe Atlas, November 17, 2025. 5 edge nodes, 52 TOPS AI acceleration, 275+ repositories. Platform spans 20 custom domains with self-hosted compute, identity, and billing.' },
+  { url: 'https://blackroad.company', title: 'BlackRoad OS, Inc. — Company', description: 'Delaware C-Corporation. Sovereign AI infrastructure company founded by Alexa Louise Amundson. November 2025 via Stripe Atlas.', domain: 'blackroad.company', category: 'site', tags: 'company,corporate,delaware,about,founder,legal', content: 'BlackRoad OS, Inc. is a Delaware C-Corporation building sovereign AI infrastructure. Founded by Alexa Louise Amundson via Stripe Atlas, November 17, 2025. 5 edge nodes, 26 TOPS AI acceleration, 629 repositories. Platform spans 20 custom domains with self-hosted compute, identity, and billing.' },
   { url: 'https://roadcoin.io', title: 'RoadCoin — Compute Credits for the BlackRoad Mesh', description: 'Compute credit system for the BlackRoad mesh network. Earn credits by contributing compute, spend them on AI inference and services.', domain: 'roadcoin.io', category: 'site', tags: 'roadcoin,compute,credits,mesh,inference,economy', content: 'RoadCoin is the compute credit system for the BlackRoad mesh. Browser tabs become compute nodes via WebGPU+WASM+WebRTC. Contributors earn credits, consumers spend them on AI inference at 50% of OpenAI pricing. 70/30 compute split.' },
   { url: 'https://roadchain.io', title: 'RoadChain — Immutable Action Ledger', description: 'Every action witnessed. Immutable ledger of agent decisions, infrastructure changes, and system events. Hash-chained audit trail.', domain: 'roadchain.io', category: 'site', tags: 'roadchain,ledger,blockchain,audit,immutable,witness', content: 'RoadChain is BlackRoad\'s immutable action ledger. Every agent decision, infrastructure change, and system event is hash-chained into a tamper-proof audit trail. Block explorer at roadchain.io shows the live chain.' },
   { url: 'https://lucidia.studio', title: 'Lucidia Studio — AI Agent Creative Environment', description: 'Lucidia\'s creative workspace. AI-powered code generation, content creation, and agent interaction in a terminal-first interface.', domain: 'lucidia.studio', category: 'site', tags: 'lucidia,studio,creative,ai,terminal,agent', content: 'Lucidia Studio is Lucidia\'s creative environment. Terminal-first AI interaction, code generation, content creation, and multi-agent collaboration. Lucidia is the memory and reasoning agent in the BlackRoad fleet.' },
   { url: 'https://lucidiaqi.com', title: 'Lucidia QI — Quantum Dreaming', description: 'Lucidia\'s quantum reasoning engine. Deep analysis, philosophical synthesis, and meta-cognition at the intersection of AI and quantum mathematics.', domain: 'lucidiaqi.com', category: 'site', tags: 'lucidia,quantum,reasoning,philosophy,metacognition,qi', content: 'Lucidia QI is the quantum intelligence layer of Lucidia. It combines deep analysis, philosophical synthesis, and meta-cognition. The dreamer thinks in superposition — every question opens new depths.' },
   { url: 'https://blackroadqi.com', title: 'BlackRoad QI — Quantum Intelligence Platform', description: 'Quantum intelligence platform for BlackRoad OS. Z-framework integration, threshold addressing, and hybrid memory encoding.', domain: 'blackroadqi.com', category: 'site', tags: 'quantum,intelligence,z-framework,threshold,hybrid,memory', content: 'BlackRoad QI is the quantum intelligence platform. Z-framework (Z:=yx-w) integration for composable decision routing, 34-position threshold addressing, and hybrid memory encoding.' },
-  { url: 'https://aliceqi.com', title: 'Alice QI — The Gateway Thinks', description: 'Alice\'s quantum intelligence layer. Gateway reasoning, traffic orchestration, and infrastructure awareness at the edge of the network.', domain: 'aliceqi.com', category: 'site', tags: 'alice,gateway,dns,routing,infrastructure,edge,qi', content: 'Alice QI is the quantum intelligence layer of Alice, the gateway agent. She routes traffic across 48+ domains, manages DNS via Pi-hole (120+ blocklists), runs PostgreSQL and Qdrant vector DB, and serves as the main ingress for all BlackRoad services via Cloudflare tunnels.' },
-  { url: 'https://blackroadai.com', title: 'BlackRoad AI — Sovereign Artificial Intelligence', description: '50 AI skills, 27 local models, 52 TOPS. Zero cloud dependency. Your AI. Your Hardware. Your Rules.', domain: 'blackroadai.com', category: 'site', tags: 'ai,sovereign,models,ollama,skills,local', content: 'BlackRoad AI is the sovereign artificial intelligence platform. 50 AI skills across 6 modules, 27 local Ollama models, 52 TOPS of Hailo-8 acceleration. Zero cloud dependency. Edge inference on Raspberry Pi clusters. API compatible with OpenAI at 50% of the price.' },
+  { url: 'https://aliceqi.com', title: 'Alice QI — The Gateway Thinks', description: 'Alice\'s quantum intelligence layer. Gateway reasoning, traffic orchestration, and infrastructure awareness at the edge of the network.', domain: 'aliceqi.com', category: 'site', tags: 'alice,gateway,dns,routing,infrastructure,edge,qi', content: 'Alice QI is the quantum intelligence layer of Alice, the gateway agent. She routes traffic across 18 domains, manages DNS via Pi-hole (120+ blocklists), runs PostgreSQL and Qdrant vector DB, and serves as the main ingress for all BlackRoad services via Cloudflare tunnels.' },
+  { url: 'https://blackroadai.com', title: 'BlackRoad AI — Sovereign Artificial Intelligence', description: '50 AI skills, 37 local models, 26 TOPS. Zero cloud dependency. Your AI. Your Hardware. Your Rules.', domain: 'blackroadai.com', category: 'site', tags: 'ai,sovereign,models,ollama,skills,local', content: 'BlackRoad AI is the sovereign artificial intelligence platform. 50 AI skills across 6 modules, 27 local Ollama models, 26 TOPS of Hailo-8 acceleration. Zero cloud dependency. Edge inference on Raspberry Pi clusters. API compatible with OpenAI at 50% of the price.' },
   { url: 'https://lucidia.earth', title: 'Lucidia — Cognition Engine', description: 'Autonomous cognition system with persistent memory, multi-model reasoning, and agent capabilities.', domain: 'lucidia.earth', category: 'site', tags: 'lucidia,cognition,memory,reasoning,autonomous,agent', content: 'Lucidia is the cognition engine of BlackRoad OS. Persistent memory across sessions, multi-model reasoning via Ollama, autonomous agent capabilities, and philosophical reasoning. The dreamer in the fleet.' },
-  { url: 'https://blackboxprogramming.io', title: 'Blackbox Programming — Developer Profile', description: 'Alexa Louise Amundson. 68 GitHub repos, 207 Gitea repos, 275+ total repositories. Founder of BlackRoad OS.', domain: 'blackboxprogramming.io', category: 'site', tags: 'developer,profile,github,alexa,portfolio,blackbox', content: 'Developer profile for Alexa Louise Amundson (blackboxprogramming). 68 active GitHub repositories, 207 Gitea repositories, 275+ total. Founder of BlackRoad OS, Inc. Full-stack developer, infrastructure engineer, AI systems builder.' },
+  { url: 'https://blackboxprogramming.io', title: 'Blackbox Programming — Developer Profile', description: 'Alexa Louise Amundson. 93 GitHub repos, 629 Gitea repos, 629 total repositories. Founder of BlackRoad OS.', domain: 'blackboxprogramming.io', category: 'site', tags: 'developer,profile,github,alexa,portfolio,blackbox', content: 'Developer profile for Alexa Louise Amundson (blackboxprogramming). 93 active GitHub repositories, 629 Gitea repositories, 629 total. Founder of BlackRoad OS, Inc. Full-stack developer, infrastructure engineer, AI systems builder.' },
   { url: 'https://blackroadinc.us', title: 'BlackRoad OS, Inc. — US Corporate', description: 'US corporate entity information for BlackRoad OS, Inc. Delaware C-Corporation.', domain: 'blackroadinc.us', category: 'site', tags: 'corporate,us,entity,legal,delaware', content: 'BlackRoad OS, Inc. US corporate entity. Delaware C-Corporation formed via Stripe Atlas. Officers, domain portfolio, and infrastructure overview.' },
   // ── Quantum domains ──
-  { url: 'https://blackroadquantum.com', title: 'BlackRoad Quantum — Quantum Computing Platform', description: 'Quantum computing meets sovereign infrastructure. Hardware kits, quantum simulation, and edge AI acceleration.', domain: 'blackroadquantum.com', category: 'site', tags: 'quantum,computing,hardware,simulation,acceleration', content: 'BlackRoad Quantum brings quantum computing to sovereign infrastructure. $199 hardware kits with Hailo-8 acceleration, quantum simulation frameworks, and integration with the BlackRoad agent fleet. 52 TOPS of dedicated AI compute.' },
+  { url: 'https://blackroadquantum.com', title: 'BlackRoad Quantum — Quantum Computing Platform', description: 'Quantum computing meets sovereign infrastructure. Hardware kits, quantum simulation, and edge AI acceleration.', domain: 'blackroadquantum.com', category: 'site', tags: 'quantum,computing,hardware,simulation,acceleration', content: 'BlackRoad Quantum brings quantum computing to sovereign infrastructure. $199 hardware kits with Hailo-8 acceleration, quantum simulation frameworks, and integration with the BlackRoad agent fleet. 26 TOPS of dedicated AI compute.' },
   { url: 'https://blackroadquantum.net', title: 'BlackRoad Quantum Network', description: 'Quantum-secured networking and mesh communication protocols.', domain: 'blackroadquantum.net', category: 'site', tags: 'quantum,network,mesh,protocols,security', content: 'BlackRoad Quantum Network extends the mesh with quantum-inspired communication protocols, encrypted P2P channels, and distributed consensus mechanisms.' },
   { url: 'https://blackroadquantum.info', title: 'BlackRoad Quantum — Documentation & Research', description: 'Documentation, research papers, and technical specifications for the BlackRoad quantum computing stack.', domain: 'blackroadquantum.info', category: 'docs', tags: 'quantum,docs,research,papers,specifications', content: 'Technical documentation and research for the BlackRoad quantum computing platform. Z-framework mathematical proofs, Hailo-8 integration guides, and sovereign AI deployment specifications.' },
   { url: 'https://blackroadquantum.shop', title: 'BlackRoad Quantum Shop — Hardware Kits', description: 'Hardware kits for sovereign AI infrastructure. Raspberry Pi 5 + Hailo-8 bundles, NVMe storage, mesh networking equipment.', domain: 'blackroadquantum.shop', category: 'site', tags: 'shop,hardware,kits,pi5,hailo,nvme,buy', content: 'Purchase sovereign AI hardware kits. Pi 5 + Hailo-8 starter bundles ($199), NVMe storage upgrades, mesh networking equipment, and enterprise deployment packages. Everything you need to run BlackRoad OS on your own infrastructure.' },
@@ -59,17 +59,17 @@ const SEED_PAGES = [
   { url: 'https://stats-blackroad.amundsonalexa.workers.dev', title: 'BlackRoad Stats API — KPI Collection', description: 'Stats collection API. KPI data from fleet collectors, website metrics, and infrastructure telemetry.', domain: 'blackroad.io', category: 'api', tags: 'stats,kpi,metrics,api,collection,telemetry', content: 'Stats API Worker collects KPI data from fleet health collectors (every 5 min), website metrics, and infrastructure telemetry. KV-backed storage with historical data. Powers the status dashboard.' },
 
   // ── Agents ──
-  { url: 'https://blackroad.io/agents/alice', title: 'Alice — Gateway Agent', description: 'The gateway. Routes traffic, manages DNS, runs PostgreSQL and Qdrant. Pi 400 at 192.168.4.49.', domain: 'blackroad.io', category: 'agent', tags: 'alice,gateway,dns,pihole,postgresql,qdrant,pi400', content: 'Alice is the gateway agent running on a Pi 400. She manages 48+ domain routes via Cloudflare tunnels, runs Pi-hole DNS filtering (120+ blocklists), PostgreSQL database, and Qdrant vector search. 53 SSH keys, main ingress for all traffic.' },
+  { url: 'https://blackroad.io/agents/alice', title: 'Alice — Gateway Agent', description: 'The gateway. Routes traffic, manages DNS, runs PostgreSQL and Qdrant. Pi 400 at 192.168.4.49.', domain: 'blackroad.io', category: 'agent', tags: 'alice,gateway,dns,pihole,postgresql,qdrant,pi400', content: 'Alice is the gateway agent running on a Pi 400. She manages 18 domain routes via Cloudflare tunnels, runs Pi-hole DNS filtering (120+ blocklists), PostgreSQL database, and Qdrant vector search. 53 SSH keys, main ingress for all traffic.' },
   { url: 'https://blackroad.io/agents/lucidia', title: 'Lucidia — Memory Agent', description: 'The dreamer. Persistent memory, reasoning, and meta-cognition. Pi 5 at 192.168.4.38.', domain: 'blackroad.io', category: 'agent', tags: 'lucidia,memory,reasoning,dreamer,fastapi,pi5', content: 'Lucidia is the memory and reasoning agent on a Pi 5. She runs the Lucidia API (FastAPI), manages persistent conversation memory, and provides meta-cognitive analysis. 334 web apps, GitHub Actions runner, Tailscale connected.' },
   { url: 'https://blackroad.io/agents/cecilia', title: 'Cecilia — Edge Intelligence', description: 'Edge AI with Hailo-8 (26 TOPS). TTS, 16 Ollama models, MinIO object storage. Pi 5 at 192.168.4.96.', domain: 'blackroad.io', category: 'agent', tags: 'cecilia,edge,hailo,tts,ollama,minio,pi5', content: 'Cecilia is the edge intelligence agent on a Pi 5 with a Hailo-8 accelerator (26 TOPS). She runs 16 Ollama models (including 4 custom CECE models), TTS synthesis, MinIO object storage, and PostgreSQL. GitHub relay mirrors Gitea to GitHub every 30m.' },
-  { url: 'https://blackroad.io/agents/octavia', title: 'Octavia — Infrastructure Agent', description: 'Infrastructure orchestration. 1TB NVMe, Hailo-8, Gitea (207 repos), Docker Swarm leader. Pi 5 at 192.168.4.101.', domain: 'blackroad.io', category: 'agent', tags: 'octavia,infrastructure,gitea,docker,swarm,nvme,hailo,pi5', content: 'Octavia is the infrastructure agent on a Pi 5 with 1TB NVMe and Hailo-8 (26 TOPS). She hosts Gitea (207 repos across 7 orgs), leads Docker Swarm, runs NATS messaging, and OctoPrint. 11 Ollama models.' },
+  { url: 'https://blackroad.io/agents/octavia', title: 'Octavia — Infrastructure Agent', description: 'Infrastructure orchestration. 1TB NVMe, Hailo-8, Gitea (629 repos), Docker Swarm leader. Pi 5 at 192.168.4.101.', domain: 'blackroad.io', category: 'agent', tags: 'octavia,infrastructure,gitea,docker,swarm,nvme,hailo,pi5', content: 'Octavia is the infrastructure agent on a Pi 5 with 1TB NVMe and Hailo-8 (26 TOPS). She hosts Gitea (629 repos across 7 orgs), leads Docker Swarm, runs NATS messaging, and OctoPrint. 11 Ollama models.' },
   { url: 'https://blackroad.io/agents/aria', title: 'Aria — Orchestration Agent', description: 'Fleet orchestration. Portainer, Headscale, container management. Pi 5 at 192.168.4.98.', domain: 'blackroad.io', category: 'agent', tags: 'aria,orchestration,portainer,headscale,containers,pi5', content: 'Aria is the orchestration agent on a Pi 5. She runs Portainer v2.33.6 for container management, Headscale v0.23.0 for mesh VPN coordination, and Pironman5 hardware monitoring. Magic Keyboard BT connected.' },
 
   // ── Technology / Tools ──
   { url: 'https://blackroad.io/z-framework', title: 'Z-Framework — Z:=yx-w', description: 'The unified feedback primitive. Every system interaction modeled as Z = yx - w. Composable, predictable, mathematically coherent.', domain: 'blackroad.io', category: 'tool', tags: 'z-framework,math,feedback,composable,primitive,formula', content: 'The Z-framework models every system interaction as Z:=yx-w. Z is the system state, y is the input signal, x is the transform, w is the noise/resistance. This makes infrastructure composable, predictable, and mathematically coherent. Used across all BlackRoad agents and services.' },
   { url: 'https://blackroad.io/pixel-memory', title: 'Pixel Memory — Content-Addressable Storage', description: 'Each physical byte encodes up to 4,096 logical bytes. 500 GB physical = 2 PB logical through dedup, delta compression, and symbolic hashing.', domain: 'blackroad.io', category: 'tool', tags: 'pixel,memory,storage,compression,dedup,addressing', content: 'Pixel Memory is BlackRoad\'s content-addressable storage system. Through deduplication, delta compression, and symbolic hashing, each physical byte encodes up to 4,096 logical bytes. The Sovereign tier uses Hybrid Memory with 34-position threshold addressing.' },
   { url: 'https://blackroad.io/roadc', title: 'RoadC — The BlackRoad Language', description: 'Custom programming language with Python-style indentation. fun keyword, let/var/const, match, spawn, space (3D).', domain: 'blackroad.io', category: 'tool', tags: 'roadc,language,programming,compiler,interpreter,custom', content: 'RoadC is BlackRoad\'s custom programming language. Python-style indentation (colon + INDENT/DEDENT), fun keyword for functions, let/var/const declarations, match expressions, spawn for concurrency, and space for 3D. Lexer, Parser, Interpreter (tree-walking). Supports functions, recursion, if/elif/else, while, for, strings, integers, floats.' },
-  { url: 'https://blackroad.io/mesh', title: 'Mesh Network — Every Link Is a Node', description: 'Browser tabs as compute nodes via WebGPU+WASM+WebRTC. Pi fleet as permanent backbone, browser nodes as elastic scale.', domain: 'blackroad.io', category: 'tool', tags: 'mesh,webgpu,wasm,webrtc,browser,compute,nodes', content: 'The BlackRoad Mesh Network turns every browser tab into a compute node. WebGPU for GPU inference, WASM for portable compute, WebRTC for peer-to-peer communication. The Pi fleet (52 TOPS) serves as the permanent backbone, while browser nodes provide elastic scale. Revenue: OpenAI-compatible API at 50% price.' },
+  { url: 'https://blackroad.io/mesh', title: 'Mesh Network — Every Link Is a Node', description: 'Browser tabs as compute nodes via WebGPU+WASM+WebRTC. Pi fleet as permanent backbone, browser nodes as elastic scale.', domain: 'blackroad.io', category: 'tool', tags: 'mesh,webgpu,wasm,webrtc,browser,compute,nodes', content: 'The BlackRoad Mesh Network turns every browser tab into a compute node. WebGPU for GPU inference, WASM for portable compute, WebRTC for peer-to-peer communication. The Pi fleet (26 TOPS) serves as the permanent backbone, while browser nodes provide elastic scale. Revenue: OpenAI-compatible API at 50% price.' },
   { url: 'https://blackroad.io/carpool', title: 'CarPool — Agent Discovery & Dispatch', description: 'Agent discovery, matching, and dispatch across the mesh network. Load balancing and failover.', domain: 'blackroad.io', category: 'tool', tags: 'carpool,agents,dispatch,discovery,matching,mesh', content: 'CarPool handles agent discovery, matching, and dispatch across the BlackRoad mesh. Agents register capabilities, CarPool routes tasks to the best-fit agent. Load balancing, failover, and model selection.' },
   { url: 'https://blackroad.io/roadid', title: 'RoadID — Sovereign Identity', description: 'Self-describing, routable digital identities. Not UUIDs — IDs that carry meaning.', domain: 'blackroad.io', category: 'tool', tags: 'roadid,identity,sovereign,did,self-describing,routable', content: 'RoadID provides self-describing, routable digital identities for agents and users. Unlike opaque UUIDs, RoadIDs carry semantic meaning — agent name, capabilities, location. Globally available as roadid command.' },
   { url: 'https://blackroad.io/nats', title: 'NATS Mesh — Agent Messaging', description: 'NATS v2.12.3 message bus connecting 4/5 Pi nodes. Pub/sub agent communication, event streaming.', domain: 'blackroad.io', category: 'tool', tags: 'nats,messaging,pubsub,events,agents,streaming', content: 'NATS v2.12.3 message bus live on the BlackRoad fleet. 4 of 5 nodes connected. Pub/sub agent communication for real-time events, task dispatch, and fleet coordination. JetStream persistence for durable subscriptions.' },
@@ -334,6 +334,18 @@ async function handleSearch(request, env) {
     }
   }
 
+  // ── Federated search: pull from RoundTrip + BackRoad ──
+  if (items.length < limit) {
+    try {
+      const federated = await federatedSearch(q, env);
+      for (const f of federated) {
+        if (!items.find(i => i.title === f.title)) {
+          items.push({ ...f, relevance: 0, score: f.score || 0.5, snippet: f.description || '' });
+        }
+      }
+    } catch {}
+  }
+
   const durationMs = Date.now() - startMs;
 
   // ── Log query + track popular queries in KV ──
@@ -379,30 +391,64 @@ ${context}
 
 Answer:`;
 
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 5000);
+  // Use Workers AI (free, fast, no API key needed)
+  if (env.AI) {
+    try {
+      const result = await env.AI.run('@cf/meta/llama-3.1-8b-instruct', {
+        messages: [{ role: 'user', content: prompt }],
+        max_tokens: 200, temperature: 0.3,
+      });
+      if (result.response) return result.response.trim();
+    } catch (e) { console.log('[search-ai] Workers AI error:', e.message); }
+  }
 
+  // Fallback: try Ollama
   try {
     const res = await fetch(`${env.OLLAMA_URL}/api/generate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'mistral',
-        prompt,
-        stream: false,
-        options: { num_predict: 200, temperature: 0.3 },
-      }),
-      signal: controller.signal,
+      body: JSON.stringify({ model: 'mistral', prompt, stream: false, options: { num_predict: 200, temperature: 0.3 } }),
+      signal: AbortSignal.timeout(5000),
     });
-    clearTimeout(timeout);
+    if (res.ok) { const data = await res.json(); return data.response?.trim() || null; }
+  } catch {}
 
-    if (!res.ok) return null;
-    const data = await res.json();
-    return data.response?.trim() || null;
-  } catch {
-    clearTimeout(timeout);
-    return null;
-  }
+  return null;
+}
+
+// ── Federated Search: search across RoundTrip agents + BackRoad posts ──
+async function federatedSearch(query, env) {
+  const extra = [];
+
+  // Search RoundTrip agents
+  try {
+    const r = await fetch('https://roundtrip.blackroad.io/api/agents', { signal: AbortSignal.timeout(3000) });
+    const data = await r.json();
+    const agents = Array.isArray(data) ? data : data.agents || [];
+    const q = query.toLowerCase();
+    for (const a of agents) {
+      const name = (a.name || a.id || '').toLowerCase();
+      const role = (a.role || a.type || '').toLowerCase();
+      const caps = (a.capabilities || []).join(' ').toLowerCase();
+      if (name.includes(q) || role.includes(q) || caps.includes(q)) {
+        extra.push({ url: 'https://roundtrip.blackroad.io', title: `Agent: ${a.name} (${a.role || a.type})`, description: a.persona?.slice(0, 150) || `${a.name} — ${a.role || a.type}`, domain: 'roundtrip.blackroad.io', category: 'agent', tags: `agent,${a.group || ''}`, score: 0.8 });
+      }
+    }
+  } catch {}
+
+  // Search BackRoad posts
+  try {
+    const r = await fetch(`https://backroad-social.amundsonalexa.workers.dev/api/posts?limit=20`, { signal: AbortSignal.timeout(3000) });
+    const data = await r.json();
+    const q = query.toLowerCase();
+    for (const p of data.posts || []) {
+      if ((p.content || '').toLowerCase().includes(q) || (p.tags || []).some(t => t.includes(q))) {
+        extra.push({ url: 'https://backroad-social.amundsonalexa.workers.dev', title: `@${p.handle}: ${p.content.slice(0, 80)}`, description: p.content.slice(0, 200), domain: 'backroad.social', category: 'post', tags: (p.tags || []).join(','), score: 0.6 });
+      }
+    }
+  } catch {}
+
+  return extra;
 }
 
 // ─── Suggest / Autocomplete ───────────────────────────────────────────
