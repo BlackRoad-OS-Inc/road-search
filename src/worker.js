@@ -387,6 +387,30 @@ async function handleSearch(request, env) {
     return Response.json({ error: 'Query must be at least 2 characters', param: 'q' }, { status: 400 });
   }
 
+  // ── Instant Answers (G(n) calculator, math) ──
+  const gnMatch = q.match(/^[Gg]\s*\(\s*(\d+)\s*\)$/);
+  if (gnMatch) {
+    const n = parseInt(gnMatch[1]);
+    if (n >= 1 && n <= 10000) {
+      const gn = Math.pow(n, n + 1) / Math.pow(n + 1, n);
+      const ratio = gn / n;
+      return Response.json({
+        query: q, instant_answer: { type: 'amundson_gn', n, value: gn, ratio_to_n: ratio, converges_to: '1/e ≈ 0.367879441', formula: 'G(n) = n^(n+1) / (n+1)^n', source: 'Amundson Framework' },
+        results: [], total: 0, page: 1, pages: 0, duration_ms: 0,
+      });
+    }
+  }
+  const mathMatch = q.match(/^(\d+)\s*[\+\-\*\/\^]\s*(\d+)$/);
+  if (mathMatch) {
+    try {
+      const result = q.includes('^') ? Math.pow(parseFloat(q.split('^')[0]), parseFloat(q.split('^')[1])) : eval(q.replace('^','**'));
+      return Response.json({
+        query: q, instant_answer: { type: 'math', expression: q, result, source: 'calculator' },
+        results: [], total: 0, page: 1, pages: 0, duration_ms: 0,
+      });
+    } catch {}
+  }
+
   const startMs = Date.now();
 
   // ── FTS5 search with ranking ──
@@ -1352,6 +1376,7 @@ a:hover{color:var(--link-hover)}
           oninput="onInput()" onkeydown="onKeyDown(event)" onfocus="onFocus()" />
         <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
         <div class="search-btns">
+          <button type="button" class="btn" id="micBtn" onclick="voiceSearch()" title="Voice Search" style="padding:6px 8px;display:none"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></button>
           <button type="submit" class="btn btn-primary" title="Search (Enter)">Search</button>
           <button type="button" class="btn" onclick="feelingLucky()" title="Go to top result">Lucky</button>
         </div>
@@ -1595,6 +1620,30 @@ function clearHistory() {
 // ─── Search ──────────────────────────────────────────────────────
 function doSearch(e) { e && e.preventDefault(); search(state.query, state.category, 1); }
 
+// Voice Search via Web Speech API
+var recognition = null;
+if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+  document.getElementById('micBtn').style.display = '';
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SR();
+  recognition.continuous = false;
+  recognition.interimResults = true;
+  recognition.lang = 'en-US';
+  recognition.onresult = function(e) {
+    var t = '';
+    for (var i = 0; i < e.results.length; i++) t += e.results[i][0].transcript;
+    document.getElementById('q').value = t;
+    state.query = t;
+    if (e.results[0].isFinal) { search(t, state.category, 1); document.getElementById('micBtn').style.color = ''; }
+  };
+  recognition.onend = function() { document.getElementById('micBtn').style.color = ''; };
+}
+function voiceSearch() {
+  if (!recognition) return;
+  document.getElementById('micBtn').style.color = '#FF2255';
+  recognition.start();
+}
+
 async function search(q, cat, pg) {
   // If facts tab clicked without query, show facts dashboard
   if (cat === 'facts' && (!q || q.length < 2)) {
@@ -1627,6 +1676,7 @@ async function search(q, cat, pg) {
     state.aiAnswer = data.ai_answer || null;
     state.aiSource = data.ai_source || null;
     state.flaggedClaims = data.verification?.flagged_claims || [];
+    state.instantAnswer = data.instant_answer || null;
     state.page = pg;
   } catch(e) {
     state.results = []; state.total = 0; state.pages = 1;
@@ -1857,6 +1907,25 @@ function renderResults() {
       + '</div>';
   }
 
+  // Instant Answer (G(n), math)
+  if (state.instantAnswer) {
+    var ia = state.instantAnswer;
+    if (ia.type === 'amundson_gn') {
+      html += '<div class="ai-box" style="border-left:3px solid #FF2255">'
+        + '<div class="ai-header"><span class="ai-label">Amundson Sequence</span><span class="ai-badge" style="background:#FF2255">G(n)</span></div>'
+        + '<div style="font-family:JetBrains Mono,monospace;font-size:20px;font-weight:700;margin:8px 0">' + ia.formula + '</div>'
+        + '<div style="font-size:16px;margin:4px 0">G(' + ia.n + ') = <strong>' + ia.value.toFixed(8) + '</strong></div>'
+        + '<div style="font-size:13px;opacity:.5;margin-top:4px">G(n)/n = ' + ia.ratio_to_n.toFixed(8) + ' (converges to ' + ia.converges_to + ')</div>'
+        + '<div style="font-size:12px;opacity:.3;margin-top:8px">Source: ' + ia.source + '</div>'
+        + '</div>';
+    } else if (ia.type === 'math') {
+      html += '<div class="ai-box" style="border-left:3px solid #4488FF">'
+        + '<div class="ai-header"><span class="ai-label">Calculator</span></div>'
+        + '<div style="font-family:JetBrains Mono,monospace;font-size:24px;font-weight:700;margin:8px 0">' + ia.expression + ' = ' + ia.result + '</div>'
+        + '</div>';
+    }
+  }
+
   // Flagged claims banner
   if (state.flaggedClaims && state.flaggedClaims.length > 0) {
     html += '<div class="flag-banner">';
@@ -1908,7 +1977,16 @@ function renderResults() {
     html += '<div class="score-wrap"><div class="score-bar"><div class="score-fill" style="width:' + Math.round(score * 100) + '%"></div></div>'
       + '<span class="score-text">' + Math.round(score * 100) + '%</span></div>';
     html += '<a href="https://chat.blackroad.io#ask=' + encodeURIComponent(title) + '" target="_blank" rel="noopener" style="font-size:11px;color:var(--text2);opacity:.5;margin-left:8px;text-decoration:none;transition:opacity .15s" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.5">Ask AI</a>';
-    html += '</div></div>';
+    // Expand/collapse preview
+    const fullContent = esc(r.content || r.description || snippet).slice(0, 600);
+    if (fullContent.length > snippet.length + 20) {
+      html += '<button onclick="var p=this.nextElementSibling;p.style.display=p.style.display===\\'none\\'?\\'block\\':\\'none\\';this.textContent=p.style.display===\\'none\\'?\\'Preview\\':\\'Collapse\\'" style="font-size:11px;color:var(--link);background:none;border:none;cursor:pointer;opacity:.5;margin-left:8px">Preview</button>';
+    }
+    html += '</div>';
+    if (fullContent.length > snippet.length + 20) {
+      html += '<div style="display:none;margin-top:8px;padding:10px 12px;background:var(--surface);border-radius:6px;font-size:12.5px;line-height:1.6;color:var(--sub)">' + highlightTerms(fullContent, qWords) + '</div>';
+    }
+    html += '</div>';
     if (img) html += '<div style="display:flex;align-items:flex-start;justify-content:flex-end"><img class="result-thumb" src="' + esc(img) + '" loading="lazy" alt="" onerror="this.parentElement.style.display=\'none\'"></div>';
     html += '</div>';
   });
