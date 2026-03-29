@@ -19,3 +19,7 @@ id = "c878fbcc1faf4eddbc98dcfd7485048d"
 [vars]
 OLLAMA_URL = "https://ollama.blackroad.io"
 STATS_API = "https://stats-blackroad.amundsonalexa.workers.dev"
+AUTH_API = "https://auth.blackroad.io"
+
+[ai]
+binding = "AI"
