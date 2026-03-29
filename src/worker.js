@@ -378,6 +378,8 @@ async function handleSearch(request, env) {
   const q = url.searchParams.get('q')?.trim();
   const category = url.searchParams.get('category');
   const domain = url.searchParams.get('domain');
+  const fromDate = url.searchParams.get('from');
+  const toDate = url.searchParams.get('to');
   const page = parseInt(url.searchParams.get('page') || '1');
   const limit = Math.min(parseInt(url.searchParams.get('limit') || '10'), 50);
   const ai = url.searchParams.get('ai') !== 'false';
@@ -430,6 +432,8 @@ async function handleSearch(request, env) {
   const countParams = [ftsQuery];
   if (category) { countSql += ' AND p.category = ?'; countParams.push(category); }
   if (domain) { countSql += ' AND p.domain = ?'; countParams.push(domain); }
+  if (fromDate) { countSql += ' AND p.indexed_at >= ?'; countParams.push(Math.floor(new Date(fromDate).getTime() / 1000)); }
+  if (toDate) { countSql += ' AND p.indexed_at <= ?'; countParams.push(Math.floor(new Date(toDate).getTime() / 1000) + 86400); }
 
   let sql = `
     SELECT p.id, p.url, p.title, p.description, p.content, p.domain, p.category, p.tags, p.image,
@@ -442,6 +446,8 @@ async function handleSearch(request, env) {
 
   if (category) { sql += ' AND p.category = ?'; params.push(category); }
   if (domain) { sql += ' AND p.domain = ?'; params.push(domain); }
+  if (fromDate) { sql += ' AND p.indexed_at >= ?'; params.push(Math.floor(new Date(fromDate).getTime() / 1000)); }
+  if (toDate) { sql += ' AND p.indexed_at <= ?'; params.push(Math.floor(new Date(toDate).getTime() / 1000) + 86400); }
   sql += ' ORDER BY rank LIMIT ? OFFSET ?';
   params.push(limit, offset);
 
